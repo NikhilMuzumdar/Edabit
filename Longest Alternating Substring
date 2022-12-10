@@ -1,0 +1,36 @@
+# Given a string of digits, return the longest substring with alternating odd/even or even/odd digits. 
+# If two or more substrings have the same length, return the substring that occurs first.
+
+
+def longest_substring(a_string):
+    
+    # Returns False if both digits are even or odd
+    def evaluate(tup):
+        if int(tup[0]) % 2 != int(tup[-1]) % 2:
+            return True
+        return False
+    
+    tup_pairs = [(a_string[i], a_string[i+1]) for i in range(len(a_string)-1)]
+    tup_dict = dict(enumerate(tup_pairs))
+    index_map = []
+    for key in tup_dict.keys():
+        if evaluate(tup_dict[key]):
+            index_map.append(key)
+        else:
+            index_map.append("x")
+            
+    max_length = 0
+    result = None
+    for i in range(len(index_map)+1):
+        for j in range(i, len(index_map)+1):
+            if "x" in index_map[i:j]:
+                pass
+            else:
+                if len(index_map[i:j]) > max_length:
+                    max_length = len(index_map[i:j])
+                    result = index_map[i:j]
+
+    index = (result[0], result[-1]+2) 
+    # Add 1 for tuple index compensation and 1 for range func compensation
+    
+    print(a_string[index[0]: index[-1]])
