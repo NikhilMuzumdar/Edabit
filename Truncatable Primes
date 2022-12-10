@@ -1,0 +1,48 @@
+# A left-truncatable prime is a prime number that contains no 0 digits and, when the first digit is successively removed, the result is always prime.
+# A right-truncatable prime is a prime number that contains no 0 digits and, when the last digit is successively removed, the result is always prime.
+# Create a function that takes an integer as an argument and:
+# If the integer is only a left-truncatable prime, return "left".
+# If the integer is only a right-truncatable prime, return "right".
+# If the integer is both, return "both".
+# Otherwise, return False.
+
+
+def truncatable(n):
+    # Helper func
+    def lefts(string, check_left=True):
+        if check_left:
+            return [int(string[i:]) for i in range(len(string))]
+        return [int(string[:i+1]) for i in range(len(string))]
+
+    def is_prime(n):
+        from math import sqrt, floor
+        if n == 1:
+            return False
+        for i in range(2, floor(sqrt(n)+1)):
+            if n % i == 0:
+                return False
+        return True
+    
+    # Main Code
+    n = str(n)
+    if "0" in n:
+        return False
+    left, right = True, True
+
+    for el in lefts(n, True):
+        if not is_prime(el):
+            left = False
+            break
+
+    for el in lefts(n, False):
+        if not is_prime(el):
+            right = False
+            break
+
+    if left and right:
+        return "both"
+    if left:
+        return "left"
+    if right:
+        return "right"
+    return False
